@@ -7,7 +7,7 @@ import {
   X,
 } from "react-feather";
 
-import {ToastContext} from '../ToastProvider';
+import { ToastContext } from "../ToastProvider";
 
 import VisuallyHidden from "../VisuallyHidden";
 
@@ -20,20 +20,27 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-function Toast({ id, variant, message }) {
+function Toast({ id, variant, children }) {
   const Icon = ICONS_BY_VARIANT[variant];
 
-  const {handleDismiss} = React.useContext(ToastContext);
+  const { handleDismiss } = React.useContext(ToastContext);
 
   return (
     <div className={`${styles.toast} ${styles[variant]}`}>
       <div className={styles.iconContainer}>
         <Icon size={24} />
       </div>
-      <p className={styles.content}>{message}</p>
-      <button className={styles.closeButton} onClick={() => handleDismiss(id)}>
+      <p className={styles.content}>
+        <VisuallyHidden>{variant}</VisuallyHidden>
+        {children}
+      </p>
+      <button
+        className={styles.closeButton}
+        onClick={() => handleDismiss(id)}
+        aria-label="Dismiss message"
+        aria-live="off"
+      >
         <X size={24} />
-        <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>
   );
